@@ -27,13 +27,13 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(BusinessException.class)
     public ResponseEntity<ErrorResponseDto> handleBusiness(BusinessException ex) {
-        return build(HttpStatus.UNPROCESSABLE_ENTITY, "Business Rule Violation",
+        return build(HttpStatus.BAD_REQUEST, "Business Rule Violation",
                 List.of(ex.getMessage()));
     }
 
     @ExceptionHandler(ConflictException.class)
     public ResponseEntity<ErrorResponseDto> handleConflict(ConflictException ex) {
-        return build(HttpStatus.CONFLICT, "Conflict", List.of(ex.getMessage()));
+        return build(HttpStatus.BAD_REQUEST, "Conflict", List.of(ex.getMessage()));
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
@@ -45,7 +45,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(InvalidCredentialsException.class)
     public ResponseEntity<ErrorResponseDto> handleInvalidCredentials(
             InvalidCredentialsException ex) {
-        return build(HttpStatus.UNAUTHORIZED, "Unauthorized", List.of(ex.getMessage()));
+        return build(HttpStatus.BAD_REQUEST, "Unauthorized", List.of(ex.getMessage()));
     }
 
     @ExceptionHandler(Exception.class)

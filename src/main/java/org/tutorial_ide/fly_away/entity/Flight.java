@@ -19,10 +19,10 @@ public class Flight {
     @Column(name = "airline", nullable = false)
     private String airline;
 
-    @Column(name = "origin", nullable = false)
+    @Column(name = "origin", nullable = true)
     private String origin;
 
-    @Column(name = "destination", nullable = false)
+    @Column(name = "destination", nullable = true)
     private String destination;
 
     @Column(name = "departure_time", nullable = false)

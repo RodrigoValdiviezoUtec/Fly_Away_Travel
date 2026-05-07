@@ -50,9 +50,9 @@ public class FlightService {
     public List<FlightResponseDto> searchFlights(FlightSearchRequestDto criteria) {
         return flightRepository.search(
                 criteria.getFlightNumber(),
-                criteria.getAirline(),
-                criteria.getDepartureFrom(),
-                criteria.getDepartureTo()
+                criteria.getAirlineName(),
+                criteria.getEstDepartureTimeFrom(),
+                criteria.getEstDepartureTimeTo()
         ).stream().map(this::toDto).collect(Collectors.toList());
     }
 

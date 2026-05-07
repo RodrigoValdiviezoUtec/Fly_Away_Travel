@@ -1,0 +1,17 @@
+=============================================
+   FLY AWAY TRAVEL — BOOKING CONFIRMATION
+=============================================
+Booking ID      : 1
+Booking Date    : 2026-05-07T12:36:37.8977784
+
+--- PASSENGER INFORMATION ---
+Full Name       : John Doe
+
+--- FLIGHT DETAILS ---
+Flight Number   : AA448
+Airline         : American Airlines
+From            : null
+To              : null
+Departure       : 2026-05-10T12:00:00
+Arrival         : 2026-05-10T19:00:00
+=============================================

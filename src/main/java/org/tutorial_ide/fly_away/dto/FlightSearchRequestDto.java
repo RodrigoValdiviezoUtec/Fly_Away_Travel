@@ -7,11 +7,11 @@ import java.time.LocalDateTime;
 @Data
 public class FlightSearchRequestDto {
     private String flightNumber;
-    private String airline;
+    private String airlineName;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    private LocalDateTime departureFrom;
+    private LocalDateTime estDepartureTimeFrom;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    private LocalDateTime departureTo;
+    private LocalDateTime estDepartureTimeTo;
 }
