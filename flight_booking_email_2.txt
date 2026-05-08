@@ -1,4 +1,6 @@
-Nombres: John Doe
-Número de vuelo: AA448
-Fecha salida: 2026-05-10T12:00
-Fecha llegada: 2026-05-10T19:00
+customerFirstName: John
+customerLastName: Doe
+flightNumber: AA448
+estDepartureTime: 2026-05-10T12:00:00
+estArrivalTime: 2026-05-10T19:00:00
+bookingDate: 2026-05-07T22:08:40

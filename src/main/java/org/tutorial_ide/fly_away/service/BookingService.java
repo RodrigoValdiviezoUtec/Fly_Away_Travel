@@ -90,29 +90,30 @@ public class BookingService {
 
         booking.setBookingDate(java.time.LocalDateTime.now().truncatedTo(java.time.temporal.ChronoUnit.SECONDS));
 
+        // ... (código donde guardas la reserva)
         BookingResponseDto response = toDto(booking);
 
+        // 4. GENERACIÓN DEL ARCHIVO (EMAIL) EN RUTA RELATIVA
         try {
-
+            // Al dejar solo el nombre, se guarda en la raíz de tu proyecto fly_away
             String fileName = "flight_booking_email_" + response.getId() + ".txt";
 
             java.time.format.DateTimeFormatter fmt = java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
 
             String emailContent =
-                    response.getCustomerFirstName() + "\n" +
-                            response.getCustomerLastName() + "\n" +
-                            response.getFlightNumber() + "\n" +
-                            response.getDepartureTime().toString() + "\n" +
-                            response.getDepartureTime().format(fmt) + "\n" +
-                            response.getArrivalTime().toString() + "\n" +
-                            response.getArrivalTime().format(fmt) + "\n" +
-                            response.getBookingDate().toString() + "\n" +
-                            response.getBookingDate().format(fmt);
+                    "customerFirstName: " + response.getCustomerFirstName() + "\n" +
+                            "customerLastName: " + response.getCustomerLastName() + "\n" +
+                            "flightNumber: " + response.getFlightNumber() + "\n" +
+                            "estDepartureTime: " + response.getDepartureTime().format(fmt) + "\n" +
+                            "estArrivalTime: " + response.getArrivalTime().format(fmt) + "\n" +
+                            "bookingDate: " + response.getBookingDate().toString();
 
-            java.nio.file.Files.writeString(java.nio.file.Paths.get(fileName), emailContent);
+            java.nio.file.Path path = java.nio.file.Paths.get(fileName);
+
+            java.nio.file.Files.writeString(path, emailContent);
 
         } catch (Exception e) {
-            System.err.println("No se pudo generar el correo: " + e.getMessage());
+            System.err.println("Error al generar el archivo de email: " + e.getMessage());
         }
 
         return response;
