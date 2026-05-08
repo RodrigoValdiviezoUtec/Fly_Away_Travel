@@ -14,8 +14,6 @@ import org.tutorial_ide.fly_away.exception.BusinessException;
 import org.tutorial_ide.fly_away.exception.ResourceNotFoundException;
 import org.tutorial_ide.fly_away.repository.BookingRepository;
 
-import java.io.IOException;
-import java.nio.file.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -47,7 +45,6 @@ public class BookingService {
                             "': departure time has already passed or flight is in transit");
         }
 
-        // Rule: No overselling
         if (flight.getAvailableSeats() <= 0) {
             throw new BusinessException(
                     "No available seats on flight " + flight.getFlightNumber());
@@ -89,24 +86,36 @@ public class BookingService {
         return toDto(booking);
     }
 
-    private void generateBookingEmailFile(Booking booking, AppUser user, Flight flight) {
+    private BookingResponseDto generateBookingEmailFile(Booking booking, AppUser u, Flight f) {
+
+        booking.setBookingDate(java.time.LocalDateTime.now().truncatedTo(java.time.temporal.ChronoUnit.SECONDS));
+
+        BookingResponseDto response = toDto(booking);
+
         try {
-            Path dir = Paths.get(emailDirectory);
-            Files.createDirectories(dir);
 
-            String filename = "flight_booking_email_" + booking.getId() + ".txt";
-            Path filePath = dir.resolve(filename);
+            String fileName = "flight_booking_email_" + response.getId() + ".txt";
 
-            String content = buildEmailContent(booking, user, flight);
-            Files.writeString(filePath, content, StandardOpenOption.CREATE,
-                    StandardOpenOption.TRUNCATE_EXISTING);
+            java.time.format.DateTimeFormatter fmt = java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
 
-            log.info("Booking confirmation file created: {}", filePath.toAbsolutePath());
-        } catch (IOException e) {
-            // Non-fatal: log the error but don't roll back the booking
-            log.error("Failed to create booking email file for booking id {}: {}",
-                    booking.getId(), e.getMessage());
+            String emailContent =
+                    response.getCustomerFirstName() + "\n" +
+                            response.getCustomerLastName() + "\n" +
+                            response.getFlightNumber() + "\n" +
+                            response.getDepartureTime().toString() + "\n" +
+                            response.getDepartureTime().format(fmt) + "\n" +
+                            response.getArrivalTime().toString() + "\n" +
+                            response.getArrivalTime().format(fmt) + "\n" +
+                            response.getBookingDate().toString() + "\n" +
+                            response.getBookingDate().format(fmt);
+
+            java.nio.file.Files.writeString(java.nio.file.Paths.get(fileName), emailContent);
+
+        } catch (Exception e) {
+            System.err.println("No se pudo generar el correo: " + e.getMessage());
         }
+
+        return response;
     }
 
     private String buildEmailContent(Booking booking, AppUser user, Flight flight) {
@@ -148,7 +157,8 @@ public class BookingService {
         return BookingResponseDto.builder()
                 .id(booking.getId())
                 .userId(u.getId())
-                .userFullName(u.getFirstName() + " " + u.getLastName())
+                .customerFirstName(u.getFirstName()) // Nuevo campo
+                .customerLastName(u.getLastName())   // Nuevo campo
                 .flightId(f.getId())
                 .flightNumber(f.getFlightNumber())
                 .airline(f.getAirline())

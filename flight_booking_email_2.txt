@@ -1,0 +1,4 @@
+Nombres: John Doe
+Número de vuelo: AA448
+Fecha salida: 2026-05-10T12:00
+Fecha llegada: 2026-05-10T19:00

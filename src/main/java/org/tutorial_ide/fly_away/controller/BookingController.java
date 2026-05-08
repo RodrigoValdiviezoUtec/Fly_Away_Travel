@@ -18,9 +18,10 @@ public class BookingController {
         return ResponseEntity.ok(bookingService.getById(id));
     }
 
-    /** GET /flight/book/{id} — Protected (alias as specified) */
-    @GetMapping("/flight/book/{id}")
-    public ResponseEntity<BookingResponseDto> getBookingByIdAlias(@PathVariable Long id) {
+    @GetMapping("/flights/book/{id}")
+    public ResponseEntity<BookingResponseDto> getBooking(@PathVariable Long id) {
         return ResponseEntity.ok(bookingService.getById(id));
     }
+
+
 }

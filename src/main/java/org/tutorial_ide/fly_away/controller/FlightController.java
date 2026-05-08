@@ -1,6 +1,7 @@
 package org.tutorial_ide.fly_away.controller;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,7 +47,15 @@ public class FlightController {
     public ResponseEntity<BookingResponseDto> bookFlight(
             @Valid @RequestBody BookingRequestDto dto,
             @AuthenticationPrincipal JwtAuthenticationPrincipal principal) {
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(bookingService.book(principal.getUserId(), dto));
+
+        return ResponseEntity.ok(bookingService.book(principal.getUserId(), dto));
+    }
+
+    @PostMapping("/flights/create-many")
+    public ResponseEntity<Void> createManyFlights(@Valid @RequestBody CreateManyFlightsRequestDto request) {
+        for (FlightRequestDto dto : request.getInputs()) {
+            flightService.createFlight(dto);
+        }
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }
